@@ -1,0 +1,30 @@
+class ChatbotDemo {
+  constructor() {
+    this.faqData = null;
+  }
+
+  async init() {
+    try {
+      const response = await fetch("./data/faq.json");
+
+      if (!response.ok) {
+        throw new Error("Failed to load FAQ dataset");
+      }
+
+      const data = await response.json();
+
+      this.validateFaqSchema(data);
+
+      this.faqData = data;
+    } catch (error) {
+      console.error("FAQ loading failed:", error);
+
+      this.faqData = {
+        intents: [],
+        fallback: {
+          response: "FAQ data is currently unavailable."
+        }
+      };
+    }
+  }
+}
